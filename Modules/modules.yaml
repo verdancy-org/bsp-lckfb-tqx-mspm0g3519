@@ -1,0 +1,7 @@
+modules:
+  - verdancy-org/BitsButtonXR
+  - verdancy-org/Display
+  - verdancy-org/LSM6DS3TRC
+  - verdancy-org/SSD1306
+  - xrobot-org/W25QXX
+  - verdancy-org/WS2812

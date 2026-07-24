@@ -1,0 +1,15 @@
+build/
+cmake-build-*/
+.cache/
+.vscode/
+compile_commands.json
+*.elf
+*.hex
+*.bin
+*.map
+*.out
+*.log
+Modules/*
+!Modules/modules.yaml
+!Modules/sources.yaml
+!Modules/CMakeLists.txt
