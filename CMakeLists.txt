@@ -29,16 +29,16 @@ set(XR_LOG_MESSAGE_MAX_LEN 96 CACHE STRING "LibXR log message buffer length")
 include("${CMAKE_SOURCE_DIR}/cmake/LibXR.CMake")
 
 set(APP_SOURCES
-  "${CMAKE_SOURCE_DIR}/src/main.c"
-  "${CMAKE_SOURCE_DIR}/src/app_main.cpp"
-  "${CMAKE_SOURCE_DIR}/src/syscalls_stub.c"
+  "${CMAKE_SOURCE_DIR}/User/main.c"
+  "${CMAKE_SOURCE_DIR}/User/app_main.cpp"
+  "${CMAKE_SOURCE_DIR}/Core/syscalls_stub.c"
   "${MSPM0_STARTUP_FILE}"
   "${SYSCFG_C_FILE}")
 
 add_executable(${PROJECT_NAME}.elf ${APP_SOURCES})
 
 target_include_directories(${PROJECT_NAME}.elf PRIVATE
-  "${CMAKE_SOURCE_DIR}/src"
+  "${CMAKE_SOURCE_DIR}/Core"
   "${CMAKE_SOURCE_DIR}/User"
   ${MSPM0_COMMON_INCLUDE_DIRS})
 
