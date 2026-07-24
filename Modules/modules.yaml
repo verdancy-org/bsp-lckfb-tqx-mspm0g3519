@@ -1,5 +1,6 @@
 modules:
   - verdancy-org/BitsButtonXR
+  - verdancy-org/Dial
   - verdancy-org/Display
   - verdancy-org/LSM6DS3TRC
   - verdancy-org/SSD1306

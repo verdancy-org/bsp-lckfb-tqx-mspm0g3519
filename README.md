@@ -43,6 +43,7 @@ cmake -S . -B build -G Ninja `
 Default instantiated modules:
 
 - `BitsButtonXR` for PB21/PA18/PA31/PA24/PB24 keys.
+- `Dial` on TIMG8 QEI PA29/PA30 for the EC11-style front-panel dial.
 - `W25QXX` on SPI1 + PB6 chip select.
 - `LSM6DS3TRC` on I2C0 PA0/PA1, matching the factory firmware's 7-bit `0x6A` IMU.
 - `WS2812PWM` on TIMA1/PB26 + DMA CH0 via the WS2812-local `TimedWaveform` backend.

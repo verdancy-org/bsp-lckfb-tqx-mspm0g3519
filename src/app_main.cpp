@@ -4,6 +4,7 @@
 #include <cstdint>
 
 #include "MSPM0TimedWaveform.hpp"
+#include "MSPM0DialInput.hpp"
 #include "app_framework.hpp"
 #include "gpio.hpp"
 #include "libxr.hpp"
@@ -75,6 +76,7 @@ extern "C" void app_main(void)
 
   static MSPM0PWM pwm_buzzer({BUZZER_INST, GPIO_BUZZER_C1_IDX,
                               static_cast<std::uint32_t>(BUZZER_INST_CLK_FREQ)});
+  static MSPM0DialInput dial_input(MSPM0_DIAL_INPUT_INIT(QEI_ENCODER));
   static MSPM0TimedWaveform ws2812_waveform(
       MSPM0_TIMED_WAVEFORM_INIT(WS2812, GPIO_WS2812_C0, DMA_CH0));
   InitBoardI2C0();
@@ -102,6 +104,7 @@ extern "C" void app_main(void)
       Entry<GPIO>{key_a24, {"btn_a24", "a24", "btn4"}},
       Entry<GPIO>{key_b24, {"btn_b24", "b24", "btn5"}},
       Entry<PWM>{pwm_buzzer, {"buzzer_pwm", "buzzer"}},
+      Entry<DialInput>{dial_input, {"dial", "knob", "encoder_dial"}},
       Entry<TimedWaveform>{ws2812_waveform,
                            {"ws2812_waveform", "ws2812_timed_waveform"}},
       Entry<I2C>{i2c_imu, {"i2c_imu", "i2c0", "i2c_oled"}},

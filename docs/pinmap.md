@@ -13,7 +13,7 @@ MSPM0G3519 LQFP-64(PM).
 | Keys | GPIO | PB21, PA18, PA31, PA24, PB24 | `btn_enter`, `btn_back`, `btn_encoder`, `btn_a24`, `btn_b24` |
 | WS2812 | TIMA1 PWM + DMA CH0 | PB26 | `ws2812_waveform` hardware alias, consumed by `WS2812PWM` |
 | Buzzer | TIMG6 PWM | PB27 | `buzzer_pwm`, `buzzer` |
-| Encoder QEI | TIMG8 QEI | PA29, PA30 | reserved |
+| Dial QEI | TIMG8 QEI | PA29, PA30 | `dial`, `knob`, `encoder_dial` |
 | Wireless link | GPIO | PB23 | `wireless_link` |
 
 Notes:

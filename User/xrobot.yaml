@@ -69,6 +69,16 @@ modules:
       BUFFER_SIZE: 128
     constructor_args: {}
 
+  - id: dial
+    name: Dial
+    constructor_args:
+      input_alias: {string: dial}
+      steps_per_detent: 4
+      reverse: false
+      poll_interval_ms: 5
+      fast_threshold_ms: 80
+      event_queue_size: 16
+
   - id: imu
     name: LSM6DS3TRC
     constructor_args:
