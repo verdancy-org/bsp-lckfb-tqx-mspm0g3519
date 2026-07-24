@@ -72,7 +72,9 @@ modules:
   - id: dial
     name: Dial
     constructor_args:
-      input_alias: {string: dial}
+      dial_alias: {string: dial}
+      phase_a_alias: {string: dial_a}
+      phase_b_alias: {string: dial_b}
       steps_per_detent: 4
       reverse: false
       poll_interval_ms: 5
@@ -92,7 +94,7 @@ modules:
       gyro_topic_name: {string: lsm6ds3trc_gyro}
       accl_topic_name: {string: lsm6ds3trc_accl}
 
-  - id: board_ws2812
+  - id: ws2812
     name: WS2812PWM
     template_args:
       MaxLeds: 4
@@ -101,3 +103,17 @@ modules:
       led_count: 4
       brightness: 32
       demo_period_ms: 40
+
+  - id: SSD1306_0
+    name: SSD1306
+    constructor_args:
+      i2c_alias: {string: i2c_oled}
+      address: 0x3C
+      frame_topic_name: {string: display_frame}
+      chunk_bytes: 64
+
+  - id: DisplaySurface_0
+    name: DisplaySurface
+    constructor_args:
+      frame_topic_name: {string: display_frame}
+      refresh_interval_ms: 33
