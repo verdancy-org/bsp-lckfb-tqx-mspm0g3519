@@ -115,23 +115,6 @@ bool SYSCFG_DL_SYSCTL_SYSPLL_init(void);
 
 
 
-
-/* Defines for QEI_ENCODER */
-#define QEI_ENCODER_INST                                                   TIMG8
-#define QEI_ENCODER_INST_IRQHandler                             TIMG8_IRQHandler
-#define QEI_ENCODER_INST_INT_IRQN                               (TIMG8_INT_IRQn)
-/* Pin configuration defines for QEI_ENCODER PHA Pin */
-#define GPIO_QEI_ENCODER_PHA_PORT                                          GPIOA
-#define GPIO_QEI_ENCODER_PHA_PIN                                  DL_GPIO_PIN_29
-#define GPIO_QEI_ENCODER_PHA_IOMUX                                (IOMUX_PINCM4)
-#define GPIO_QEI_ENCODER_PHA_IOMUX_FUNC               IOMUX_PINCM4_PF_TIMG8_CCP0
-/* Pin configuration defines for QEI_ENCODER PHB Pin */
-#define GPIO_QEI_ENCODER_PHB_PORT                                          GPIOA
-#define GPIO_QEI_ENCODER_PHB_PIN                                  DL_GPIO_PIN_30
-#define GPIO_QEI_ENCODER_PHB_IOMUX                                (IOMUX_PINCM5)
-#define GPIO_QEI_ENCODER_PHB_IOMUX_FUNC               IOMUX_PINCM5_PF_TIMG8_CCP1
-
-
 /* Defines for TIMER_TICK */
 #define TIMER_TICK_INST                                                  (TIMA0)
 #define TIMER_TICK_INST_IRQHandler                              TIMA0_IRQHandler
@@ -248,6 +231,15 @@ bool SYSCFG_DL_SYSCTL_SYSPLL_init(void);
 #define KEY_B24_PORT                                                     (GPIOB)
 #define KEY_B24_PIN                                             (DL_GPIO_PIN_24)
 #define KEY_B24_IOMUX                                            (IOMUX_PINCM52)
+/* Port definition for Pin Group DIAL */
+#define DIAL_PORT                                                        (GPIOA)
+
+/* Defines for A: GPIOA.30 with pinCMx 5 on package pin 37 */
+#define DIAL_A_PIN                                              (DL_GPIO_PIN_30)
+#define DIAL_A_IOMUX                                              (IOMUX_PINCM5)
+/* Defines for B: GPIOA.29 with pinCMx 4 on package pin 36 */
+#define DIAL_B_PIN                                              (DL_GPIO_PIN_29)
+#define DIAL_B_IOMUX                                              (IOMUX_PINCM4)
 
 
 /* clang-format on */
@@ -260,7 +252,6 @@ void SYSCFG_DL_SYSCTL_init(void);
 bool SYSCFG_DL_SYSCTL_SYSPLL_init(void);
 void SYSCFG_DL_BUZZER_init(void);
 void SYSCFG_DL_WS2812_init(void);
-void SYSCFG_DL_QEI_ENCODER_init(void);
 void SYSCFG_DL_TIMER_TICK_init(void);
 void SYSCFG_DL_UART_DEBUG_init(void);
 void SYSCFG_DL_UART_WIRELESS_init(void);

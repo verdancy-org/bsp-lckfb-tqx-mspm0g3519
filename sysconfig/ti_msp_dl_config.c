@@ -42,7 +42,6 @@
 
 DL_TimerG_backupConfig gBUZZERBackup;
 DL_TimerA_backupConfig gWS2812Backup;
-DL_TimerG_backupConfig gQEI_ENCODERBackup;
 DL_TimerA_backupConfig gTIMER_TICKBackup;
 DL_SPI_backupConfig gSPI_FLASHBackup;
 
@@ -58,7 +57,6 @@ SYSCONFIG_WEAK void SYSCFG_DL_init(void)
     SYSCFG_DL_SYSCTL_init();
     SYSCFG_DL_BUZZER_init();
     SYSCFG_DL_WS2812_init();
-    SYSCFG_DL_QEI_ENCODER_init();
     SYSCFG_DL_TIMER_TICK_init();
     SYSCFG_DL_UART_DEBUG_init();
     SYSCFG_DL_UART_WIRELESS_init();
@@ -67,7 +65,6 @@ SYSCONFIG_WEAK void SYSCFG_DL_init(void)
     /* Ensure backup structures have no valid state */
 	gBUZZERBackup.backupRdy 	= false;
 	gWS2812Backup.backupRdy 	= false;
-	gQEI_ENCODERBackup.backupRdy 	= false;
 	gTIMER_TICKBackup.backupRdy 	= false;
 
 	gSPI_FLASHBackup.backupRdy 	= false;
@@ -83,7 +80,6 @@ SYSCONFIG_WEAK bool SYSCFG_DL_saveConfiguration(void)
 
 	retStatus &= DL_TimerG_saveConfiguration(BUZZER_INST, &gBUZZERBackup);
 	retStatus &= DL_TimerA_saveConfiguration(WS2812_INST, &gWS2812Backup);
-	retStatus &= DL_TimerG_saveConfiguration(QEI_ENCODER_INST, &gQEI_ENCODERBackup);
 	retStatus &= DL_TimerA_saveConfiguration(TIMER_TICK_INST, &gTIMER_TICKBackup);
 	retStatus &= DL_SPI_saveConfiguration(SPI_FLASH_INST, &gSPI_FLASHBackup);
 
@@ -97,7 +93,6 @@ SYSCONFIG_WEAK bool SYSCFG_DL_restoreConfiguration(void)
 
 	retStatus &= DL_TimerG_restoreConfiguration(BUZZER_INST, &gBUZZERBackup, false);
 	retStatus &= DL_TimerA_restoreConfiguration(WS2812_INST, &gWS2812Backup, false);
-	retStatus &= DL_TimerG_restoreConfiguration(QEI_ENCODER_INST, &gQEI_ENCODERBackup, false);
 	retStatus &= DL_TimerA_restoreConfiguration(TIMER_TICK_INST, &gTIMER_TICKBackup, false);
 	retStatus &= DL_SPI_restoreConfiguration(SPI_FLASH_INST, &gSPI_FLASHBackup);
 
@@ -110,7 +105,6 @@ SYSCONFIG_WEAK void SYSCFG_DL_initPower(void)
     DL_GPIO_reset(GPIOB);
     DL_TimerG_reset(BUZZER_INST);
     DL_TimerA_reset(WS2812_INST);
-    DL_TimerG_reset(QEI_ENCODER_INST);
     DL_TimerA_reset(TIMER_TICK_INST);
     DL_UART_Main_reset(UART_DEBUG_INST);
     DL_UART_Main_reset(UART_WIRELESS_INST);
@@ -121,7 +115,6 @@ SYSCONFIG_WEAK void SYSCFG_DL_initPower(void)
     DL_GPIO_enablePower(GPIOB);
     DL_TimerG_enablePower(BUZZER_INST);
     DL_TimerA_enablePower(WS2812_INST);
-    DL_TimerG_enablePower(QEI_ENCODER_INST);
     DL_TimerA_enablePower(TIMER_TICK_INST);
     DL_UART_Main_enablePower(UART_DEBUG_INST);
     DL_UART_Main_enablePower(UART_WIRELESS_INST);
@@ -140,9 +133,6 @@ SYSCONFIG_WEAK void SYSCFG_DL_GPIO_init(void)
     DL_GPIO_enableOutput(GPIO_BUZZER_C1_PORT, GPIO_BUZZER_C1_PIN);
     DL_GPIO_initPeripheralOutputFunction(GPIO_WS2812_C0_IOMUX,GPIO_WS2812_C0_IOMUX_FUNC);
     DL_GPIO_enableOutput(GPIO_WS2812_C0_PORT, GPIO_WS2812_C0_PIN);
-
-    DL_GPIO_initPeripheralInputFunction(GPIO_QEI_ENCODER_PHA_IOMUX,GPIO_QEI_ENCODER_PHA_IOMUX_FUNC);
-    DL_GPIO_initPeripheralInputFunction(GPIO_QEI_ENCODER_PHB_IOMUX,GPIO_QEI_ENCODER_PHB_IOMUX_FUNC);
 
     DL_GPIO_initPeripheralOutputFunction(
         GPIO_UART_DEBUG_IOMUX_TX, GPIO_UART_DEBUG_IOMUX_TX_FUNC);
@@ -196,6 +186,14 @@ SYSCONFIG_WEAK void SYSCFG_DL_GPIO_init(void)
 		 DL_GPIO_INVERSION_DISABLE, DL_GPIO_RESISTOR_PULL_UP,
 		 DL_GPIO_HYSTERESIS_DISABLE, DL_GPIO_WAKEUP_DISABLE);
 
+    DL_GPIO_initDigitalInputFeatures(DIAL_A_IOMUX,
+		 DL_GPIO_INVERSION_DISABLE, DL_GPIO_RESISTOR_PULL_UP,
+		 DL_GPIO_HYSTERESIS_DISABLE, DL_GPIO_WAKEUP_DISABLE);
+
+    DL_GPIO_initDigitalInputFeatures(DIAL_B_IOMUX,
+		 DL_GPIO_INVERSION_DISABLE, DL_GPIO_RESISTOR_PULL_UP,
+		 DL_GPIO_HYSTERESIS_DISABLE, DL_GPIO_WAKEUP_DISABLE);
+
     DL_GPIO_setPins(GPIOA, OLED_SDA_PIN |
 		OLED_SCL_PIN);
     DL_GPIO_enableOutput(GPIOA, OLED_SDA_PIN |
@@ -228,6 +226,7 @@ SYSCONFIG_WEAK bool SYSCFG_DL_SYSCTL_SYSPLL_init(void)
     uint32_t fFCCSysoscCount;
     uint32_t fFCCPllCount;
     uint32_t fFCCRatio;
+    uint32_t fccTimeOutCounter;
 
     DL_SYSCTL_setFCCPeriods( DL_SYSCTL_FCC_TRIG_CNT_01 );
 
@@ -236,8 +235,16 @@ SYSCONFIG_WEAK bool SYSCFG_DL_SYSCTL_SYSPLL_init(void)
                         DL_SYSCTL_FCC_TRIG_SOURCE_LFCLK,
                         DL_SYSCTL_FCC_CLOCK_SOURCE_SYSPLLCLK0);
     /* Get SYSPLL frequency using FCC */
+    fccTimeOutCounter = 0;
     DL_SYSCTL_startFCC();
-    while (DL_SYSCTL_isFCCDone() == 0);
+    while (DL_SYSCTL_isFCCDone() == 0) {
+        delay_cycles(977);  /* 1x LFCLK cycle = 32MHz/32.768kHz = 977, 30.5us */
+        fccTimeOutCounter++;
+        if(fccTimeOutCounter > 65){
+            /* Timeout set to approximately 2ms (user-customizable) */
+            break;
+        }
+    }
 
     /* get measA= SYSPLLCLK0 freq wrt LFOSC*/
     fFCCPllCount = DL_SYSCTL_readFCC();
@@ -247,8 +254,16 @@ SYSCONFIG_WEAK bool SYSCFG_DL_SYSCTL_SYSPLL_init(void)
                         DL_SYSCTL_FCC_TRIG_SOURCE_LFCLK,
                         DL_SYSCTL_FCC_CLOCK_SOURCE_HFCLK);
     /* Get SYSPLL frequency using FCC */
+    fccTimeOutCounter = 0;
     DL_SYSCTL_startFCC();
-    while (DL_SYSCTL_isFCCDone() == 0 );
+    while (DL_SYSCTL_isFCCDone() == 0) {
+        delay_cycles(977);  /* 1x LFCLK cycle = 32MHz/32.768kHz = 977, 30.5us */
+        fccTimeOutCounter++;
+        if(fccTimeOutCounter > 65){
+            /* Timeout set to approximately 2ms (user-customizable) */
+            break;
+        }
+    }
 
     /* get measB= SYSOSC freq wrt LFOSC*/
     fFCCSysoscCount = DL_SYSCTL_readFCC();
@@ -389,27 +404,6 @@ SYSCONFIG_WEAK void SYSCFG_DL_WS2812_init(void) {
     DL_TimerA_setCCPDirection(WS2812_INST , DL_TIMER_CC0_OUTPUT );
 
 
-}
-
-
-static const DL_TimerG_ClockConfig gQEI_ENCODERClockConfig = {
-    .clockSel = DL_TIMER_CLOCK_BUSCLK,
-    .divideRatio = DL_TIMER_CLOCK_DIVIDE_1,
-    .prescale = 0U
-};
-
-
-SYSCONFIG_WEAK void SYSCFG_DL_QEI_ENCODER_init(void) {
-
-    DL_TimerG_setClockConfig(
-        QEI_ENCODER_INST, (DL_TimerG_ClockConfig *) &gQEI_ENCODERClockConfig);
-
-    DL_TimerG_configQEI(QEI_ENCODER_INST, DL_TIMER_QEI_MODE_2_INPUT,
-        DL_TIMER_CC_INPUT_INV_NOINVERT, DL_TIMER_CC_0_INDEX);
-    DL_TimerG_configQEI(QEI_ENCODER_INST, DL_TIMER_QEI_MODE_2_INPUT,
-        DL_TIMER_CC_INPUT_INV_NOINVERT, DL_TIMER_CC_1_INDEX);
-    DL_TimerG_setLoadValue(QEI_ENCODER_INST, 65535);
-    DL_TimerG_enableClock(QEI_ENCODER_INST);
 }
 
 
