@@ -1,7 +1,6 @@
 build/
 cmake-build-*/
 .cache/
-.vscode/
 compile_commands.json
 *.elf
 *.hex
@@ -9,6 +8,7 @@ compile_commands.json
 *.map
 *.out
 *.log
+User/xrobot_main.hpp
 Modules/*
 !Modules/modules.yaml
 !Modules/sources.yaml
